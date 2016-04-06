@@ -2,9 +2,7 @@
 #include <random>
 #include <cassert>
 
-using std::string;
-using std::vector;
-using std::random_device;
+using namespace std;
 
 class Node {
 public:
@@ -14,7 +12,7 @@ public:
         _childs.push_back(node);
     }
     
-    void fetch(const std::function<void(Node*)> proc) {
+    void fetch(const function<void(Node*)> proc) {
         proc(this);
         for (auto child : _childs) {
             child->fetch(proc);
@@ -26,13 +24,13 @@ public:
     }
     
 private:
-    std::string _name;
+    string _name;
     vector<Node*> _childs;
 };
 
 int randNumber(int maxValue) {
     assert(maxValue != 0);
-    return (std::rand() % maxValue) + 1;
+    return (rand() % maxValue) + 1;
 }
 
 //  テスト用に適当なツリー構造のノードを生成。
@@ -42,12 +40,12 @@ Node* createTestTreeNodes() {
     auto imax = randNumber(10);
     for( int i = 0 ; i < imax ; ++i ){
         auto jmax = randNumber(10);
-        auto childNode = new Node("|_ childNode:" + std::to_string(i));
+        auto childNode = new Node("|_ childNode:" + to_string(i));
         for( int j = 0 ; j < jmax ; ++j ){
             auto kmax = randNumber(10);
-            auto grandChildNode = new Node("|  |_ grandchildNode:" + std::to_string(j));
+            auto grandChildNode = new Node("|  |_ grandchildNode:" + to_string(j));
             for( int k = 0 ; k < kmax ; ++k ){
-                grandChildNode->addChild(new Node("|  |  |_ great-grandchild:" + std::to_string(k)));
+                grandChildNode->addChild(new Node("|  |  |_ great-grandchild:" + to_string(k)));
             }
             childNode->addChild(grandChildNode);
         }
@@ -62,7 +60,7 @@ int main(int argc, const char * argv[]) {
 
     auto parentNode = createTestTreeNodes();
     parentNode->fetch([](Node* n) {
-        std::cout << n->getName() << std::endl;
+        cout << n->getName() << endl;
     });
     
     return 0;
